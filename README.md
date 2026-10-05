@@ -1,9 +1,10 @@
 # Asa · Weitong Li — Personal Website
 
-A fast, dependency-free static personal site built from the resume of
+A fast, dependency-free static personal site built from the CV of
 **Weitong Li (Asa)** — B.S. in Artificial Intelligence, BNBU.
 
-No build step, no framework, no npm install. Open `index.html` and it works.
+No build step, no framework, no `npm install`. Open `index.html` and it works.
+Deploy it to GitHub Pages in about two minutes (see §4).
 
 ---
 
@@ -15,89 +16,117 @@ No build step, no framework, no npm install. Open `index.html` and it works.
 | `styles.css` | Design system: colour tokens, layout, components, responsive + print styles |
 | `script.js` | Theme toggle, sticky nav, scroll-spy, scroll reveals, BibTeX copy-to-clipboard |
 | `assets/favicon.svg` | The "A" monogram favicon |
+| `assets/og.png` | 1200×630 social-preview card (LinkedIn / Twitter / WeChat link previews) |
 | `resume.pdf` | Your CV, linked from the hero and contact sections |
+| `deploy.sh` | One-command publish to GitHub Pages (needs the GitHub CLI) |
+| `.github/workflows/pages.yml` | **Optional** Actions-based deploy (off by default) |
+| `CNAME.example` | Template for a custom domain — copy to `CNAME` only if you own the domain |
 | `robots.txt`, `sitemap.xml` | SEO basics — **update the domain in both** |
-| `CNAME` | GitHub Pages custom-domain file — **update if you use a different domain** |
-| `404.html` | Friendly not-found page |
+| `404.html` | Friendly not-found page (works under a repo sub-path too) |
+| `.nojekyll` | Tells GitHub Pages to serve files as-is, no Jekyll processing |
+| `LICENSE` | MIT for the code; the CV content stays yours |
 
 ## 2. Preview locally
 
-Just double-click `index.html`. For a proper local server (recommended, so
-`/resume.pdf` and relative paths behave exactly like production):
+Double-click `index.html`, or serve it properly (recommended, so `resume.pdf`
+and relative paths behave exactly like production):
 
 ```bash
 cd personal-web
 python3 -m http.server 8000
-# then open http://localhost:8000
+# open http://localhost:8000
 ```
 
 ## 3. Things to fill in (5 minutes)
 
 1. **Social links.** In `index.html` search for `data-placeholder=` and replace the
    three `href="#"` values with your real Google Scholar / GitHub / LinkedIn URLs.
-   Currently those links show a hint toast instead of navigating.
-2. **Domain.** Replace `https://weitongli.com/` with your real domain in:
+   Until then those links show a hint toast instead of navigating.
+2. **Domain.** If you are *not* using `weitongli.com`, replace it in:
    - `index.html` (`<link rel="canonical">`, `og:url`)
-   - `robots.txt` (sitemap line)
+   - `robots.txt` (the `Sitemap:` line)
    - `sitemap.xml` (`<loc>`)
-   - `CNAME` (GitHub Pages only)
-3. **CV.** `resume.pdf` is the copy you gave me. Swap it whenever you update the PDF — keep the filename.
-4. **Optional: phone number.** It is deliberately **not** published (privacy). If you
-   want it visible, add a line in the `.hero__links` list.
-5. **Open Graph image** (optional but nice for LinkedIn/Twitter previews): drop a
-   1200×630 PNG at `assets/og.png` and add
-   `<meta property="og:image" content="https://yourdomain.com/assets/og.png" />`.
+   - `assets/og.png` shows `weitongli.com` in the corner — re-run `.tools/make_og.py`
+     after editing, or just ignore it.
+   - Make `og:image` / `twitter:image` **absolute** (`https://yourdomain.com/assets/og.png`)
+     once you know the URL — some crawlers, Twitter/X in particular, ignore relative paths.
+3. **CV.** `resume.pdf` is the copy you gave me. Swap it whenever you update the
+   PDF — keep the filename so every link keeps working.
+4. **Optional: phone number.** Deliberately **not** published (privacy). If you want
+   it visible, add a line to the `.hero__links` list in the hero.
 
-## 4. Deploy — pick one
+## 4. Deploy to GitHub Pages
 
-### Option A — Cloudflare Pages (recommended: free, fast in China-adjacent regions,
-### free unlimited bandwidth, free SSL, easy custom domain)
+You need a GitHub account. Pick **one** of the two routes.
 
-1. Create a free account at <https://dash.cloudflare.com>.
-2. **Workers & Pages → Create → Pages → Upload assets**.
-3. Drag the whole `personal-web` folder in (or zip it and upload).
-4. It gives you `your-project.pages.dev` immediately.
-5. **Custom domains → Set up a custom domain** → enter your domain → follow the DNS step.
+### Route A — the one-command route (recommended)
 
-Or from the command line:
+Requires the GitHub CLI. Install it with `brew install gh` (or from
+<https://cli.github.com>), then authenticate once:
 
 ```bash
-npm i -g wrangler
-cd personal-web
-wrangler pages deploy . --project-name=asa-site
+gh auth login
 ```
 
-### Option B — GitHub Pages (100% free, most familiar to academics)
+Then, from this folder:
+
+```bash
+./deploy.sh                # creates a public repo called "personal-web"
+./deploy.sh asa-website    # ...or pick your own repo name
+```
+
+The script initialises git if needed, commits, creates the repo, pushes, and
+switches on GitHub Pages. Your site goes live at:
+
+```
+https://<your-username>.github.io/<repo-name>/
+```
+
+### Route B — the manual route
 
 ```bash
 cd personal-web
-git init -b main
 git add .
-git commit -m "Personal site"
-git remote add origin git@github.com:<your-username>/<repo>.git
+git commit -m "Personal website: Asa (Weitong Li)"
+git branch -M main
+git remote add origin https://github.com/<your-username>/<repo-name>.git
 git push -u origin main
 ```
 
-Then: **Repo → Settings → Pages → Source: Deploy from a branch → main / (root)**.
-Add your custom domain in the same screen (the `CNAME` file already exists), and
-tick **Enforce HTTPS**.
+Then in the browser:
 
-### Option C — Netlify / Vercel
+1. Open the repo → **Settings** → **Pages**.
+2. Under **Build and deployment → Source**, choose **Deploy from a branch**.
+3. Branch: **main**, folder: **/ (root)** → **Save**.
+4. Wait ~1 minute, then open `https://<your-username>.github.io/<repo-name>/`.
 
-Drag-and-drop the folder at <https://app.netlify.com/drop>. Done. Free tier is
-generous for a personal site.
+> **Do not** create a `CNAME` file unless you own the domain — a wrong `CNAME`
+> makes GitHub redirect away from your working `github.io` URL. That is why the
+> file ships as `CNAME.example`.
 
-## 5. Custom domain checklist (after you buy one)
+### Route C — Actions-based deploy (optional)
 
-1. In your registrar's DNS panel add:
-   - `A` records for `@` → your host's IPs, **or** a `CNAME` for `www` → `your-project.pages.dev`
-   - (Cloudflare Pages and Netlify tell you the exact records — copy them verbatim)
-2. Wait for DNS propagation (usually minutes, up to 24 h).
-3. Enable HTTPS / "Always Use HTTPS" in the host dashboard.
-4. Point the canonical URL + `sitemap.xml` + `robots.txt` at the final domain.
-5. Submit `https://yourdomain.com/sitemap.xml` to
+Prefer CI? Set the Pages source to **GitHub Actions**, then add a repository
+variable so the shipped workflow activates:
+
+**Settings → Secrets and variables → Actions → Variables → New repository variable**
+name `PAGES_SOURCE`, value `actions`. The workflow is skipped until you do this,
+so it never leaves red ✗ runs on a branch-deploy repo.
+
+## 5. Custom domain checklist (only if you own one)
+
+```bash
+echo "your-domain.com" > CNAME
+git add CNAME && git commit -m "Add custom domain" && git push
+```
+
+1. In your registrar's DNS panel add the records GitHub shows you
+   (`A` records for `@`, or a `CNAME` for `www`).
+2. **Settings → Pages → Custom domain** → enter the domain → **Save**, then tick
+   **Enforce HTTPS** once the certificate is issued.
+3. Point the canonical URL, `sitemap.xml`, and `robots.txt` at the final domain.
+4. Submit `https://yourdomain.com/sitemap.xml` to
    [Google Search Console](https://search.google.com/search-console).
-6. Add the site to your email signature, GitHub profile, and Google Scholar profile.
 
 ## 6. Design notes
 
@@ -109,8 +138,8 @@ generous for a personal site.
   support, semantic landmarks and heading order.
 - **Print**: `Cmd/Ctrl + P` produces a clean, colour-free, link-annotated document —
   a usable paper CV fallback.
-- **Performance**: no framework, no bundler, three font families preconnected, and
-  scroll handlers are `requestAnimationFrame`-throttled and passive.
+- **Performance**: no framework, no bundler, no build step; scroll handlers are
+  `requestAnimationFrame`-throttled and passive.
 
 ## 7. Editing tips
 
@@ -120,5 +149,5 @@ generous for a personal site.
   including its `<details class="bib">` BibTeX block — and edit the text.
 - To add an award line, copy a `<li>` inside `<ul class="tl__awards">`.
 - Colours are all defined once at the top of `styles.css` under `:root`
-  (and dark overrides under `[data-theme="dark"]`). Change `--accent` to re-skin
-  the entire site.
+  (with dark overrides under `[data-theme="dark"]`). Change `--accent` to
+  re-skin the entire site.
