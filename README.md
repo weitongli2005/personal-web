@@ -14,7 +14,7 @@ No build step, no npm, no framework. Open `index.html` and it works.
 
 | File | Purpose |
 |---|---|
-| `index.html` | The whole page: About Me, Research Interests, Education, Publications, Awards, Internships |
+| `index.html` | The whole page: About Me, Research Interests, Education, Publications, Internships, Awards |
 | `assets/css/style.css` | Theme layout (fixed left header + right content column) |
 | `assets/css/font.css` | Fonts — Crimson Pro (body) + Ubuntu Mono (email) |
 | `assets/css/publications.css` | Publication list styling (title / author / venue / buttons) |
@@ -30,8 +30,21 @@ No build step, no npm, no framework. Open `index.html` and it works.
 | `LICENSE` | MIT for the code; theme credited to Yaoyao Liu; CV text stays yours |
 
 Layout is **two columns** like the reference site: a fixed 232 px left header
-(avatar, name, position, affiliation, email, icons) and a 650 px right column of
-`<h2>` sections. Below 960 px it collapses to a single column automatically.
+(avatar, name, position, affiliation, email, icons) and a right column of
+`<h2>` sections. Below 1000 px it collapses to a single column automatically.
+
+**Two deliberate departures from the stock theme**, both to keep the page short
+enough to read top-to-bottom in one scroll:
+
+- The canvas is wider — `.wrapper` is `min(1280px, 95vw)` instead of a fixed
+  960 px, and the body column takes the remaining width (`calc(100% - 262px)`
+  rather than a fixed 650 px). The left column therefore also sits further left.
+- Publication entries no longer reserve the theme's empty 8 rem thumbnail
+  column, and their spacing comes from a margin instead of `<br>` tags.
+
+Both overrides live in a clearly-marked block at the end of
+`assets/css/style.css` (layout) and `assets/css/publications.css` (list spacing),
+so you can delete them to get the stock theme back.
 
 ## 2. Preview locally
 

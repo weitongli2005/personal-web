@@ -82,3 +82,16 @@ blockquote { background: var(--global-bg-color); border-left: 2px solid var(--gl
 .publications ol.bibliography li div.abstract.hidden.open { border-color: var(--global-text-color); }
 
 .publications ol.bibliography li .teaser { border-radius: 8px; box-shadow: 3px 3px 6px #888; height: 123px; width: 270px; margin-top: 5px; margin-left: 5px; margin-bottom: 5px; object-fit: cover; }
+
+/* =========================================================
+   Site overrides (this file loads after style.css, so these win)
+   ========================================================= */
+
+/* The theme reserves 8rem of vertical space per entry for a thumbnail column
+   that this page leaves empty. Trimming it removes pure dead space between
+   papers without changing how any single entry looks. */
+.publications{ margin-top: 1.25rem; }
+.publications ol.bibliography li{ min-height: auto; margin-bottom: 1rem; }
+.publications ol.bibliography li + br,
+.publications ol.bibliography br{ display: none; }
+.publications ol.bibliography li .abbr{ height: auto; margin-bottom: 0; }
