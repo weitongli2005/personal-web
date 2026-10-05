@@ -14,7 +14,7 @@ No build step, no npm, no framework. Open `index.html` and it works.
 
 | File | Purpose |
 |---|---|
-| `index.html` | The whole page: About Me, Research Interests, Education, Internships, Awards, Publications |
+| `index.html` | The whole page: About Me, Research Interests, Education, Awards, Publications, Internships |
 | `assets/css/style.css` | Theme layout (fixed left header + right content column) |
 | `assets/css/font.css` | Fonts — Crimson Pro (body) + Ubuntu Mono (email) |
 | `assets/css/publications.css` | Publication list styling (title / author / venue / buttons) |
