@@ -6,7 +6,7 @@ Yaoyao Liu) — the same theme used by many BNBU/HKBU students.
 
 No build step, no npm, no framework. Open `index.html` and it works.
 
-**Live at → <https://weitongli2005.github.io/personal-web/>**
+**Live at → <https://weitongli2005.github.io/weitong-li/>**
 
 ---
 
@@ -49,7 +49,7 @@ so you can delete them to get the stock theme back.
 ## 2. Preview locally
 
 ```bash
-cd personal-web
+cd weitong-li
 python3 -m http.server 8000
 # open http://localhost:8000
 ```
@@ -72,14 +72,14 @@ The site is **already deployed** on GitHub Pages (`main` branch, root folder,
 HTTPS enforced). To publish any change:
 
 ```bash
-cd personal-web
+cd weitong-li
 git add -A
 git commit -m "Update site"
 git push
 ```
 
 GitHub rebuilds automatically; the change is live in about a minute at
-<https://weitongli2005.github.io/personal-web/>.
+<https://weitongli2005.github.io/weitong-li/>.
 
 > Pushing from **your own terminal** for the first time? Run `gh auth setup-git`
 > once so git can reuse your GitHub CLI login. (GitHub Desktop also works.)
@@ -87,7 +87,7 @@ GitHub rebuilds automatically; the change is live in about a minute at
 ### Deploying somewhere fresh
 
 ```bash
-./deploy.sh                # creates a public repo "personal-web" and enables Pages
+./deploy.sh                # creates a public repo "weitong-li" and enables Pages
 ./deploy.sh asa-website    # ...or pick your own repo name
 ```
 
@@ -108,7 +108,7 @@ git add CNAME && git commit -m "Add custom domain" && git push
 1. Add the DNS records GitHub shows you (`A` records for `@`, or a `CNAME` for `www`).
 2. **Settings → Pages → Custom domain** → enter the domain → **Save** → tick
    **Enforce HTTPS**.
-3. Replace `https://weitongli2005.github.io/personal-web` with the new domain in
+3. Replace `https://weitongli2005.github.io/weitong-li` with the new domain in
    `index.html` (`canonical`, `og:url`, `og:image`, `twitter:image`),
    `robots.txt`, `sitemap.xml`, and the corner label of `assets/og.png`.
 4. Submit `https://yourdomain.com/sitemap.xml` to

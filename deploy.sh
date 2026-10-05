@@ -3,7 +3,7 @@
 # deploy.sh — publish this static site to GitHub Pages in one command.
 #
 # Usage:
-#   ./deploy.sh                 # creates/uses repo "personal-web", public
+#   ./deploy.sh                 # creates/uses repo "weitong-li", public
 #   ./deploy.sh my-repo-name    # custom repo name
 #
 # Requirements: git + the GitHub CLI (gh), authenticated once with `gh auth login`.
@@ -11,7 +11,7 @@
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
-REPO_NAME="${1:-personal-web}"
+REPO_NAME="${1:-weitong-li}"
 BRANCH="main"
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$HERE"
