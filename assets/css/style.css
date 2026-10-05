@@ -20,3 +20,15 @@
      and is capped, so it can never push the avatar off the left edge. */
   header{ margin-left: calc(-1 * clamp(0px, (100vw - 1280px) / 5, 120px)); }
 }
+
+/* Prominent "Click to view CV" link in the left column, in the accent red
+   used elsewhere on the page for highlighted states. */
+.cv-link{
+  display: inline-block;
+  margin-top: .4rem;
+  color: #e74d3c !important;
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+.cv-link:hover{ color: #c0392b !important; text-decoration: underline; }
