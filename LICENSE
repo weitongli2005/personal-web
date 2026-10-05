@@ -22,6 +22,11 @@ SOFTWARE.
 
 ---
 
+Third-party notice: the layout and the files under `assets/css/` and
+`assets/js/` are adapted from the **Minimal Light** theme,
+<https://github.com/yaoyao-liu/minimal-light>, MIT License,
+Copyright (c) Yaoyao Liu. That licence is retained here.
+
 Note: the MIT licence above covers the site's source code (HTML/CSS/JS).
 The personal content — CV text, biography, publication list, and resume.pdf —
 remains the personal property of Weitong Li and is not licensed for reuse.

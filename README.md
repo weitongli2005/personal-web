@@ -1,10 +1,12 @@
-# Asa · Weitong Li — Personal Website
+# Weitong Li (Asa) — Academic Homepage
 
-A fast, dependency-free static personal site built from the CV of
-**Weitong Li (Asa)** — B.S. in Artificial Intelligence, BNBU.
+A minimal, single-page academic homepage built on the
+[Minimal Light](https://github.com/yaoyao-liu/minimal-light) theme (MIT, by
+Yaoyao Liu) — the same theme used by many BNBU/HKBU students.
 
-No build step, no framework, no `npm install`. Open `index.html` and it works.
-Deploy it to GitHub Pages in about two minutes (see §4).
+No build step, no npm, no framework. Open `index.html` and it works.
+
+**Live at → <https://weitongli2005.github.io/personal-web/>**
 
 ---
 
@@ -12,24 +14,26 @@ Deploy it to GitHub Pages in about two minutes (see §4).
 
 | File | Purpose |
 |---|---|
-| `index.html` | All page content (hero, about, publications, research, experience, projects, skills, contact) |
-| `styles.css` | Design system: colour tokens, layout, components, responsive + print styles |
-| `script.js` | Theme toggle, sticky nav, scroll-spy, scroll reveals, BibTeX copy-to-clipboard |
-| `assets/favicon.svg` | The "A" monogram favicon |
-| `assets/og.png` | 1200×630 social-preview card (LinkedIn / Twitter / WeChat link previews) |
-| `resume.pdf` | Your CV, linked from the hero and contact sections |
-| `deploy.sh` | One-command publish to GitHub Pages (needs the GitHub CLI) |
-| `.github/workflows/pages.yml` | **Not included** — optional Actions deploy; see §4 Route C if you want it |
+| `index.html` | The whole page: About Me, Research Interests, Education, Publications, Awards, Internships |
+| `assets/css/style.css` | Theme layout (fixed left header + right content column) |
+| `assets/css/font.css` | Fonts — Crimson Pro (body) + Ubuntu Mono (email) |
+| `assets/css/publications.css` | Publication list styling (title / author / venue / buttons) |
+| `assets/js/scale.fix.js` | Small iOS viewport fix from the theme |
+| `assets/img/avatar.png` | Placeholder monogram avatar — **replace with your photo** |
+| `assets/favicon.svg` | Browser tab icon |
+| `assets/og.png` | 1200×630 link-preview card for WeChat / LinkedIn / Twitter |
+| `resume.pdf` | Your CV, linked from the CV icon in the header |
+| `404.html` | Not-found page, in the same theme |
+| `robots.txt`, `sitemap.xml` | SEO — already pointed at the live URL |
 | `CNAME.example` | Template for a custom domain — copy to `CNAME` only if you own the domain |
-| `robots.txt`, `sitemap.xml` | SEO basics — **update the domain in both** |
-| `404.html` | Friendly not-found page (works under a repo sub-path too) |
-| `.nojekyll` | Tells GitHub Pages to serve files as-is, no Jekyll processing |
-| `LICENSE` | MIT for the code; the CV content stays yours |
+| `deploy.sh` | One-command publish to GitHub Pages (needs the GitHub CLI) |
+| `LICENSE` | MIT for the code; theme credited to Yaoyao Liu; CV text stays yours |
+
+Layout is **two columns** like the reference site: a fixed 232 px left header
+(avatar, name, position, affiliation, email, icons) and a 650 px right column of
+`<h2>` sections. Below 960 px it collapses to a single column automatically.
 
 ## 2. Preview locally
-
-Double-click `index.html`, or serve it properly (recommended, so `resume.pdf`
-and relative paths behave exactly like production):
 
 ```bash
 cd personal-web
@@ -37,95 +41,49 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## 3. Things to fill in (5 minutes)
+## 3. Things to fill in (2 minutes)
 
-1. **Social links.** In `index.html` search for `data-placeholder=` and replace the
-   three `href="#"` values with your real Google Scholar / GitHub / LinkedIn URLs.
-   Until then those links show a hint toast instead of navigating.
-2. **Domain.** The site is **already live** at
-   <https://weitongli2005.github.io/personal-web/>, and every URL is wired to it:
-   `index.html` (`<link rel="canonical">`, `og:url`, `og:image`, `twitter:image`),
-   `robots.txt`, `sitemap.xml`, and the corner label inside `assets/og.png`.
-   To move to a custom domain later, replace
-   `https://weitongli2005.github.io/personal-web` in those four text files
-   (plus `assets/og.png`), then follow §5.
-3. **CV.** `resume.pdf` is the copy you gave me. Swap it whenever you update the
-   PDF — keep the filename so every link keeps working.
-4. **Optional: phone number.** Deliberately **not** published (privacy). If you want
-   it visible, add a line to the `.hero__links` list in the hero.
+1. **Avatar.** Drop a square photo at `assets/img/avatar.png` (about 400×400),
+   or delete the `<a class="image avatar">` line in `index.html` to remove it.
+2. **Social icons.** Only the CV icon is enabled. Uncomment the Google Scholar /
+   GitHub / LinkedIn block in `index.html` and paste your real profile URLs
+   (the block is right below the CV icon, inside `<div class="social-icons">`).
+3. **Publications.** Add or edit `<li>` blocks inside
+   `<ol class="bibliography">`. Each entry needs a `.title`, `.author`,
+   `.periodical`, and a `.links` div. `*` marks equal contribution.
+4. **CV.** `resume.pdf` is the copy you gave me — swap the file, keep the name.
 
-## 4. Deploy to GitHub Pages
+## 4. Updating the live site
 
-You need a GitHub account. Pick **one** of the two routes.
-
-### Route A — the one-command route (recommended)
-
-Requires the GitHub CLI. Install it with `brew install gh` (or from
-<https://cli.github.com>), then authenticate once:
-
-```bash
-gh auth login
-```
-
-Then, from this folder:
-
-```bash
-./deploy.sh                # creates a public repo called "personal-web"
-./deploy.sh asa-website    # ...or pick your own repo name
-```
-
-The script initialises git if needed, commits, creates the repo, pushes, and
-switches on GitHub Pages. Your site goes live at:
-
-```
-https://<your-username>.github.io/<repo-name>/
-```
-
-### Route B — the manual route
+The site is **already deployed** on GitHub Pages (`main` branch, root folder,
+HTTPS enforced). To publish any change:
 
 ```bash
 cd personal-web
-git add .
-git commit -m "Personal website: Asa (Weitong Li)"
-git branch -M main
-git remote add origin https://github.com/<your-username>/<repo-name>.git
-git push -u origin main
+git add -A
+git commit -m "Update site"
+git push
 ```
 
-Then in the browser:
+GitHub rebuilds automatically; the change is live in about a minute at
+<https://weitongli2005.github.io/personal-web/>.
 
-1. Open the repo → **Settings** → **Pages**.
-2. Under **Build and deployment → Source**, choose **Deploy from a branch**.
-3. Branch: **main**, folder: **/ (root)** → **Save**.
-4. Wait ~1 minute, then open `https://<your-username>.github.io/<repo-name>/`.
+> Pushing from **your own terminal** for the first time? Run `gh auth setup-git`
+> once so git can reuse your GitHub CLI login. (GitHub Desktop also works.)
+
+### Deploying somewhere fresh
+
+```bash
+./deploy.sh                # creates a public repo "personal-web" and enables Pages
+./deploy.sh asa-website    # ...or pick your own repo name
+```
+
+Manual route: `git push` to a repo, then **Settings → Pages → Source:
+Deploy from a branch → main / (root) → Save**.
 
 > **Do not** create a `CNAME` file unless you own the domain — a wrong `CNAME`
 > makes GitHub redirect away from your working `github.io` URL. That is why the
 > file ships as `CNAME.example`.
-
-### Route C — Actions-based deploy (optional, not enabled)
-
-The branch deploy above is what this repo actually uses, and it is the simplest
-option — no CI needed. If you would rather deploy through Actions:
-
-1. Grant the extra `workflow` token scope (GitHub refuses ordinary pushes that
-   contain files under `.github/workflows/`):
-   ```bash
-   gh auth refresh -h github.com -s workflow
-   ```
-2. Add the workflow file (a copy lives at
-   `autoresearch/.tools/site-extras/.github/workflows/pages.yml`), then:
-   ```bash
-   git add .github/workflows/pages.yml
-   git commit -m "Add Actions-based Pages deploy"
-   git push
-   ```
-3. **Settings → Secrets and variables → Actions → Variables → New repository
-   variable**: name `PAGES_SOURCE`, value `actions`.
-4. **Settings → Pages → Source: GitHub Actions.**
-
-The workflow is gated on that variable, so it stays skipped (no red ✗ runs) until
-you opt in.
 
 ## 5. Custom domain checklist (only if you own one)
 
@@ -134,34 +92,29 @@ echo "your-domain.com" > CNAME
 git add CNAME && git commit -m "Add custom domain" && git push
 ```
 
-1. In your registrar's DNS panel add the records GitHub shows you
-   (`A` records for `@`, or a `CNAME` for `www`).
-2. **Settings → Pages → Custom domain** → enter the domain → **Save**, then tick
-   **Enforce HTTPS** once the certificate is issued.
-3. Point the canonical URL, `sitemap.xml`, and `robots.txt` at the final domain.
+1. Add the DNS records GitHub shows you (`A` records for `@`, or a `CNAME` for `www`).
+2. **Settings → Pages → Custom domain** → enter the domain → **Save** → tick
+   **Enforce HTTPS**.
+3. Replace `https://weitongli2005.github.io/personal-web` with the new domain in
+   `index.html` (`canonical`, `og:url`, `og:image`, `twitter:image`),
+   `robots.txt`, `sitemap.xml`, and the corner label of `assets/og.png`.
 4. Submit `https://yourdomain.com/sitemap.xml` to
    [Google Search Console](https://search.google.com/search-console).
 
-## 6. Design notes
+## 6. Theme notes
 
-- **Type**: Newsreader (serif display) + Inter (UI) + JetBrains Mono (metadata).
-  Falls back to system fonts gracefully if Google Fonts is unreachable.
-- **Colour**: deep-green primary, warm-orange accent for awards. Full dark mode,
-  remembered in `localStorage`, and it respects `prefers-color-scheme` on first visit.
-- **Accessibility**: skip link, focus-visible rings, ARIA labels, `prefers-reduced-motion`
-  support, semantic landmarks and heading order.
-- **Print**: `Cmd/Ctrl + P` produces a clean, colour-free, link-annotated document —
-  a usable paper CV fallback.
-- **Performance**: no framework, no bundler, no build step; scroll handlers are
-  `requestAnimationFrame`-throttled and passive.
+- **Fonts**: Crimson Pro for body text, Ubuntu Mono for the email line, loaded
+  from Google Fonts. Falls back to system serif if they are unreachable.
+- **Icons**: Font Awesome 6 + Academicons from cdnjs (the theme's own choice).
+- **Dark mode**: handled automatically by the theme via `prefers-color-scheme`.
+- **Print**: `Cmd/Ctrl + P` gives a clean black-on-white copy of the page.
+- Credit and licence for the theme are in the page footer and in `LICENSE`.
 
 ## 7. Editing tips
 
-- Content lives in plain HTML with obvious section boundaries
-  (`<!-- ===== PUBLICATIONS ===== -->`).
-- To add a publication, copy an existing `<li class="pub reveal">` block —
-  including its `<details class="bib">` BibTeX block — and edit the text.
-- To add an award line, copy a `<li>` inside `<ul class="tl__awards">`.
-- Colours are all defined once at the top of `styles.css` under `:root`
-  (with dark overrides under `[data-theme="dark"]`). Change `--accent` to
-  re-skin the entire site.
+- Sections are plain `<h2>` + `<ul>` / `<p>` — search for
+  `id="publications"`, `id="awards"`, `id="internships"`.
+- Award lines follow the reference format:
+  `<li><strong>[Date]</strong> What you won</li>`.
+- Colours live at the top of the theme: headings are `#043361` navy, links `#39c`.
+  Change those two values to re-skin the page.
