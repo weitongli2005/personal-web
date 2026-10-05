@@ -13,4 +13,10 @@
 @media screen and (min-width: 1001px){
   .wrapper{ width: min(1280px, 95vw); }
   section{ width: calc(100% - 262px); }
+
+  /* Nudge the left header (the name block) further left without moving the
+     body column: the header is position:fixed, so a negative margin shifts
+     only it. The shift grows with the empty space beside the centred wrapper
+     and is capped, so it can never push the avatar off the left edge. */
+  header{ margin-left: calc(-1 * clamp(0px, (100vw - 1280px) / 5, 120px)); }
 }
