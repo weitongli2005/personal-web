@@ -19,7 +19,7 @@ Deploy it to GitHub Pages in about two minutes (see §4).
 | `assets/og.png` | 1200×630 social-preview card (LinkedIn / Twitter / WeChat link previews) |
 | `resume.pdf` | Your CV, linked from the hero and contact sections |
 | `deploy.sh` | One-command publish to GitHub Pages (needs the GitHub CLI) |
-| `.github/workflows/pages.yml` | **Optional** Actions-based deploy (off by default) |
+| `.github/workflows/pages.yml` | **Not included** — optional Actions deploy; see §4 Route C if you want it |
 | `CNAME.example` | Template for a custom domain — copy to `CNAME` only if you own the domain |
 | `robots.txt`, `sitemap.xml` | SEO basics — **update the domain in both** |
 | `404.html` | Friendly not-found page (works under a repo sub-path too) |
@@ -42,14 +42,13 @@ python3 -m http.server 8000
 1. **Social links.** In `index.html` search for `data-placeholder=` and replace the
    three `href="#"` values with your real Google Scholar / GitHub / LinkedIn URLs.
    Until then those links show a hint toast instead of navigating.
-2. **Domain.** If you are *not* using `weitongli.com`, replace it in:
-   - `index.html` (`<link rel="canonical">`, `og:url`)
-   - `robots.txt` (the `Sitemap:` line)
-   - `sitemap.xml` (`<loc>`)
-   - `assets/og.png` shows `weitongli.com` in the corner — re-run `.tools/make_og.py`
-     after editing, or just ignore it.
-   - Make `og:image` / `twitter:image` **absolute** (`https://yourdomain.com/assets/og.png`)
-     once you know the URL — some crawlers, Twitter/X in particular, ignore relative paths.
+2. **Domain.** The site is **already live** at
+   <https://weitongli2005.github.io/personal-web/>, and every URL is wired to it:
+   `index.html` (`<link rel="canonical">`, `og:url`, `og:image`, `twitter:image`),
+   `robots.txt`, `sitemap.xml`, and the corner label inside `assets/og.png`.
+   To move to a custom domain later, replace
+   `https://weitongli2005.github.io/personal-web` in those four text files
+   (plus `assets/og.png`), then follow §5.
 3. **CV.** `resume.pdf` is the copy you gave me. Swap it whenever you update the
    PDF — keep the filename so every link keeps working.
 4. **Optional: phone number.** Deliberately **not** published (privacy). If you want
@@ -104,14 +103,29 @@ Then in the browser:
 > makes GitHub redirect away from your working `github.io` URL. That is why the
 > file ships as `CNAME.example`.
 
-### Route C — Actions-based deploy (optional)
+### Route C — Actions-based deploy (optional, not enabled)
 
-Prefer CI? Set the Pages source to **GitHub Actions**, then add a repository
-variable so the shipped workflow activates:
+The branch deploy above is what this repo actually uses, and it is the simplest
+option — no CI needed. If you would rather deploy through Actions:
 
-**Settings → Secrets and variables → Actions → Variables → New repository variable**
-name `PAGES_SOURCE`, value `actions`. The workflow is skipped until you do this,
-so it never leaves red ✗ runs on a branch-deploy repo.
+1. Grant the extra `workflow` token scope (GitHub refuses ordinary pushes that
+   contain files under `.github/workflows/`):
+   ```bash
+   gh auth refresh -h github.com -s workflow
+   ```
+2. Add the workflow file (a copy lives at
+   `autoresearch/.tools/site-extras/.github/workflows/pages.yml`), then:
+   ```bash
+   git add .github/workflows/pages.yml
+   git commit -m "Add Actions-based Pages deploy"
+   git push
+   ```
+3. **Settings → Secrets and variables → Actions → Variables → New repository
+   variable**: name `PAGES_SOURCE`, value `actions`.
+4. **Settings → Pages → Source: GitHub Actions.**
+
+The workflow is gated on that variable, so it stays skipped (no red ✗ runs) until
+you opt in.
 
 ## 5. Custom domain checklist (only if you own one)
 

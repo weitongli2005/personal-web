@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://weitongli.com/sitemap.xml
+Sitemap: https://weitongli2005.github.io/personal-web/sitemap.xml
